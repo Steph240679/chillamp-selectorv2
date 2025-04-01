@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, jsonify, send_file, send_from_directory
 from preset_engine import get_presets_for_combination
 from pdf_generator import generate_preset_pdf_flask
-from base_bassistes import base_bassistes
+from bassistes import bassistes
 from liste_basses_completes import basses_uniques
 from liste_amplis_basse_complets import amplis_basse
 from liste_effets_basse_complets import effets_basse
