@@ -12,6 +12,7 @@ from liste_amplis_basse_complets import amplis_basse
 from liste_effets_basse_complets import effets_basse
 from liste_baffles_basse_complets import baffles_basse
 from base_bassistes import base_bassistes
+from basses_avec_type import basses_avec_type  # <== NOUVEL IMPORT
 
 app = Flask(__name__)
 
@@ -24,7 +25,12 @@ def generate_preset():
     ampli = data.get("ampli")
     effets = data.get("effets", [])
     baffle = data.get("baffle")
+
     preset = get_presets_for_combination(bassiste, basse, ampli, effets, baffle)
+
+    # Ajout du type de basse (actif/passif)
+    preset["basse"]["type"] = basses_avec_type.get(basse, "passive")
+
     return jsonify(preset)
 
 # Endpoint pour générer un PDF du preset
@@ -36,7 +42,12 @@ def generate_preset_pdf():
     ampli = data.get("ampli")
     effets = data.get("effets", [])
     baffle = data.get("baffle")
+
     preset = get_presets_for_combination(bassiste, basse, ampli, effets, baffle)
+
+    # Ajout du type de basse (actif/passif)
+    preset["basse"]["type"] = basses_avec_type.get(basse, "passive")
+
     pdf_buffer = generate_preset_pdf_flask(preset)
     return send_file(pdf_buffer, as_attachment=True, download_name="preset_chillamp.pdf", mimetype="application/pdf")
 
@@ -59,18 +70,14 @@ def list_baffles():
 
 @app.route('/api/liste_bassistes', methods=['GET'])
 def list_bassistes():
-    # Combine prénom et nom pour chaque bassiste
     names = [f"{b['prenom']} {b['nom']}" for b in bassistes]
     return jsonify(names)
 
-# Endpoint pour servir la page d'accueil (index.html)
 @app.route("/")
 def index():
     return send_from_directory(os.path.join(os.path.dirname(__file__), "../frontend"), "index.html")
 
 if __name__ == "__main__":
-    # Récupère le port depuis la variable d'environnement PORT, sinon utilise 5000 par défaut
     port = int(os.environ.get("PORT", 5000))
-    # Utilise la variable FLASK_DEBUG pour définir le mode debug (0 par défaut)
     debug_mode = os.environ.get("FLASK_DEBUG", "0") == "1"
     app.run(host="0.0.0.0", port=port, debug=debug_mode)
