@@ -1,9 +1,9 @@
-# adaptateurs.py (version allégée, sans vérifications inutiles)
-
 from potentiometres_amplis import potentiometres_amplis
 
-
 def adapter_basse(basse, cible):
+    """
+    Adapte les réglages de la basse en fonction du modèle et du profil cible.
+    """
     caractere = cible.get("caractere", "")
     tone = 70
     if "chaud" in caractere:
@@ -23,8 +23,10 @@ def adapter_basse(basse, cible):
         "mic_position": mic_position
     }
 
-
 def adapter_ampli(ampli, cible):
+    """
+    Adapte les réglages de l'ampli selon le profil cible.
+    """
     potards = potentiometres_amplis.get(ampli, [])
     caractere = cible.get("caractere", "")
     reglages = {}
@@ -48,8 +50,10 @@ def adapter_ampli(ampli, cible):
 
     return reglages
 
-
 def adapter_effets(effets_utilisateur, cible):
+    """
+    Adapte les réglages pour les effets en fonction du profil cible.
+    """
     effets_reglages = {}
     for effet in effets_utilisateur:
         if effet in cible.get("reglages_effets", {}):
@@ -58,8 +62,10 @@ def adapter_effets(effets_utilisateur, cible):
             effets_reglages[effet] = {"niveau": 50, "reglage": "par défaut"}
     return effets_reglages
 
-
 def adapter_baffle(baffle, cible):
+    """
+    Adapte le profil du baffle en fonction du modèle et du profil cible.
+    """
     caractere = "neutre"
     ajustement = 0
 
@@ -93,6 +99,8 @@ def adapter_baffle(baffle, cible):
         "ajustement": ajustement
     }
 
-
 def generer_chaine_signal(basse, effets, ampli, baffle):
+    """
+    Génère la chaîne du signal en concaténant les noms des composants.
+    """
     return [basse] + effets + [ampli, baffle]
