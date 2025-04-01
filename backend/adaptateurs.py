@@ -16,6 +16,8 @@ def adapter_basse(basse, cible):
         mic_position = "neck only"
     elif "attaque" in caractere:
         mic_position = "bridge only"
+        if "attaque" in caractere or "growl" in caractere or "punch" in caractere:
+    mic_position = "both"
 
     return {
         "volume": 100,
