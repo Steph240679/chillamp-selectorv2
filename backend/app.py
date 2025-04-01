@@ -49,9 +49,11 @@ def list_effets():
 def list_baffles():
     return jsonify(baffles_basse)
 
-@app.route('/api/bassistes', methods=["GET"])
-def bassistes():
-    return jsonify(bassistes)
+@app.route('/api/liste_bassistes', methods=['GET'])
+def list_bassistes():
+    # On combine prénom et nom pour chaque bassiste
+    names = [f"{b['prenom']} {b['nom']}" for b in bassistes]
+    return jsonify(names)
 
 @app.route("/")
 def index():
