@@ -10,8 +10,7 @@ bassistes = [
     {"nom": "Wooten", "prenom": "Victor", "groupe": "Béla Fleck and the Flecktones", "cle": "Wooten Victor"},
     {"nom": "Mendel", "prenom": "Nate", "groupe": "Foo Fighters", "cle": "Mendel Nate"},
     {"nom": "De Angelis", "prenom": "Victoria", "groupe": "Måneskin", "cle": "De Angelis Victoria"},
-    {"nom": "Dirnt", "prenom": "Mike", "groupe": "Green Day", "cle": "Dirnt Mike"}
-    # ... Ajouter les 91 autres au même format,
+    {"nom": "Dirnt", "prenom": "Mike", "groupe": "Green Day", "cle": "Dirnt Mike"},
     {"nom": "Baroux", "prenom": "Manu", "groupe": "Studio France", "cle": "Baroux Manu"},
     {"nom": "Beggs", "prenom": "Nick", "groupe": "Steven Wilson", "cle": "Beggs Nick"},
     {"nom": "Benjelloun", "prenom": "Michaël", "groupe": "Studio", "cle": "Benjelloun Michaël"},
