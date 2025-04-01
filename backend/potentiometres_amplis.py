@@ -1,4 +1,7 @@
-# potentiometres_amplis.py
+"""
+Dictionnaire associant chaque modèle d'ampli aux potentiomètres (réglages) disponibles.
+Chaque clé est le nom de l'ampli, et la valeur est une liste de contrôles (chaînes).
+"""
 
 potentiometres_amplis = {
     "Aguilar DB 751": ["Gain", "Bass", "Midrange", "Treble", "Master Volume"],
