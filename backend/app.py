@@ -37,3 +37,11 @@ def generate_preset_pdf():
     pdf_buffer = generate_preset_pdf_flask(preset)
     return send_file(pdf_buffer, as_attachment=True, download_name="preset_chillamp.pdf", mimetype="application/pdf")
 
+from flask import send_from_directory
+import os
+
+@app.route("/")
+def index():
+    return send_from_directory(os.path.join(os.path.dirname(__file__), "../frontend"), "index.html")
+
+
