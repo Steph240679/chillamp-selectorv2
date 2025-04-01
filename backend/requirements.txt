@@ -1,5 +1,0 @@
-reportlab
-pip install -r backend/requirements.txt
-Flask==2.2.5
-gunicorn
-reportlab
