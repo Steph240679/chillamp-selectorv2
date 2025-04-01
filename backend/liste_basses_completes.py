@@ -1,4 +1,7 @@
-# liste_basses_completes.py
+"""
+Liste complète des basses.
+Chaque élément est une chaîne représentant le modèle d'une basse.
+"""
 
 basses_uniques = [
     "Alembic Exploiter / Status Graphite",
@@ -130,4 +133,3 @@ basses_uniques = [
     "Zon Hyperbass",
     "Zon Sonus 5"
 ]
-
