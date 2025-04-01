@@ -1,4 +1,7 @@
-# liste_effets_basse_complets.py
+"""
+Liste complète des effets pour basse.
+Chaque élément est une chaîne représentant un effet ou un processeur pour basse.
+"""
 
 effets_basse = [
     "Acoustic Simulator (Boss AC-3)",
@@ -106,5 +109,5 @@ effets_basse = [
     "High Cut Filter (Darkglass Tone Capsule)",
     "Preamp + DI (Tech 21 VT Bass DI)",
     "Resonant Filter (Iron Ether Xerograph Deluxe)",
-    "Stack Simulator (Line 6 Helix)",
+    "Stack Simulator (Line 6 Helix)"
 ]
