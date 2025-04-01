@@ -1,4 +1,9 @@
-# sons_cibles.py
+"""
+Dictionnaire associant à chaque bassiste une description du son ciblé.
+
+Chaque entrée décrit le caractère sonore typique du musicien, servant à orienter
+les réglages dans la génération des presets.
+"""
 
 sons_cibles = {
     "Michel Alibo": "Son fluide et chantant, très mélodique avec une attaque douce, idéal pour la fusion jazz et les musiques caribéennes.",
