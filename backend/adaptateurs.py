@@ -39,8 +39,8 @@ def adapter_ampli(ampli, cible):
             reglages[potard] = 70 if "chaud" in caractere else 60
         elif "mid" in potard_lc:
             reglages[potard] = 50 if "scooped" in caractere else 65
-            if "mid" in potard_lc:
-    reglages[potard] = 65 + ajustement_baffle
+        elif "mid" in potard_lc:
+            reglages[potard] = 65 + ajustement_baffle
         elif "treble" in potard_lc:
             reglages[potard] = 60 if "claquant" in caractere else 50
         elif "gain" in potard_lc:
