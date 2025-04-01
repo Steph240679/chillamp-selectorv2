@@ -5,4 +5,5 @@ services:
     buildCommand: ""
     startCommand: python backend/app.py
     plan: free
+pip install -r requirements.txt
 
