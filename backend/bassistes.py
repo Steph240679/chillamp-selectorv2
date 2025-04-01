@@ -55,7 +55,7 @@ bassistes = [
     {"nom": "Manring", "prenom": "Michael", "groupe": "Solo", "cle": "Manring Michael"},
     {"nom": "Manring", "prenom": "Michael", "groupe": "Solo", "cle": "Manring Michael"},
     {"nom": "McCartney", "prenom": "Paul", "groupe": "The Beatles", "cle": "McCartney Paul"},
-    {"nom": "McKagan", "prenom": "Duff", "groupe": "Guns N" Roses", "cle": "McKagan Duff"},
+    {"nom": "McKagan", "prenom": "Duff", "groupe": "Guns N' Roses", "cle": "McKagan Duff"},
     {"nom": "McVie", "prenom": "John", "groupe": "Fleetwood Mac", "cle": "McVie John"},
     {"nom": "Mbappé", "prenom": "Etienne", "groupe": "Joe Zawinul, Studio", "cle": "Mbappé Etienne"},
     {"nom": "Mendez", "prenom": "Martin", "groupe": "Opeth", "cle": "Mendez Martin"},
