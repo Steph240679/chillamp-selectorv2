@@ -1,4 +1,7 @@
-# liste_baffles_basse_complets.py
+"""
+Liste complète des baffles pour basse.
+Chaque élément est une chaîne représentant le modèle d'un baffle.
+"""
 
 baffles_basse = [
     "Aguilar DB 112",
