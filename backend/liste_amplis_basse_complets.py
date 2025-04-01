@@ -1,4 +1,7 @@
-# liste_amplis_basse_complets.py
+"""
+Liste complète des amplis pour basse.
+Chaque élément est une chaîne représentant le modèle d'un ampli.
+"""
 
 amplis_basse = [
     "Aguilar DB 751",
@@ -66,4 +69,3 @@ amplis_basse = [
     "Trickfish Bullhead .5K",
     "Warwick LWA 1000"
 ]
-
