@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: chillamp-selector
+    name: chillamp-selectorv2
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: python backend/app.py
