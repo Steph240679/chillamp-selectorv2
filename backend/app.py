@@ -1,6 +1,5 @@
 import sys
 import os
-# Ajouter la racine du dépôt au PYTHONPATH pour permettre l'import des modules situés à la racine
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from flask import Flask, request, jsonify, send_file, send_from_directory
@@ -15,7 +14,6 @@ from base_bassistes import base_bassistes
 
 app = Flask(__name__)
 
-# Endpoint pour générer un preset en JSON
 @app.route("/api/preset", methods=["POST"])
 def generate_preset():
     data = request.get_json()
@@ -29,7 +27,6 @@ def generate_preset():
     preset["basse"]["type"] = basses_avec_type.get(basse, "passive")
     return jsonify(preset)
 
-# Endpoint pour générer un PDF du preset
 @app.route("/api/preset/pdf", methods=["POST"])
 def generate_preset_pdf():
     data = request.get_json()
@@ -45,7 +42,6 @@ def generate_preset_pdf():
     pdf_buffer = generate_preset_pdf_flask(preset)
     return send_file(pdf_buffer, as_attachment=True, download_name="preset_chillamp.pdf", mimetype="application/pdf")
 
-# Endpoints pour renvoyer les listes de matériels
 @app.route('/api/liste_basses', methods=["GET"])
 def list_basses():
     return jsonify(sorted(basses_avec_type.keys()))
@@ -64,7 +60,7 @@ def list_baffles():
 
 @app.route('/api/liste_bassistes', methods=['GET'])
 def list_bassistes():
-    names = [f"{b['prenom']} {b['nom']}" for b in bassistes]
+    names = [f"{b['nom']} {b['prenom']} ({b['groupe']})" for b in bassistes]
     return jsonify(names)
 
 @app.route("/")
