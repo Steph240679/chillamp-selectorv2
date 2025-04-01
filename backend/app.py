@@ -7,12 +7,11 @@ from flask import Flask, request, jsonify, send_file, send_from_directory
 from preset_engine import get_presets_for_combination
 from pdf_generator import generate_preset_pdf_flask
 from bassistes import bassistes
-from liste_basses_completes import basses_uniques
+from basses_avec_type import basses_avec_type
 from liste_amplis_basse_complets import amplis_basse
 from liste_effets_basse_complets import effets_basse
 from liste_baffles_basse_complets import baffles_basse
 from base_bassistes import base_bassistes
-from basses_avec_type import basses_avec_type  # <== NOUVEL IMPORT
 
 app = Flask(__name__)
 
@@ -27,10 +26,7 @@ def generate_preset():
     baffle = data.get("baffle")
 
     preset = get_presets_for_combination(bassiste, basse, ampli, effets, baffle)
-
-    # Ajout du type de basse (actif/passif)
     preset["basse"]["type"] = basses_avec_type.get(basse, "passive")
-
     return jsonify(preset)
 
 # Endpoint pour générer un PDF du preset
@@ -44,8 +40,6 @@ def generate_preset_pdf():
     baffle = data.get("baffle")
 
     preset = get_presets_for_combination(bassiste, basse, ampli, effets, baffle)
-
-    # Ajout du type de basse (actif/passif)
     preset["basse"]["type"] = basses_avec_type.get(basse, "passive")
 
     pdf_buffer = generate_preset_pdf_flask(preset)
@@ -54,7 +48,7 @@ def generate_preset_pdf():
 # Endpoints pour renvoyer les listes de matériels
 @app.route('/api/liste_basses', methods=["GET"])
 def list_basses():
-    return jsonify(basses_uniques)
+    return jsonify(sorted(basses_avec_type.keys()))
 
 @app.route('/api/liste_amplis', methods=["GET"])
 def list_amplis():
