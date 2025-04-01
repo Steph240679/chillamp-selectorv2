@@ -1,4 +1,10 @@
-# bassistes.py
+"""
+Liste des bassistes disponibles.
+Chaque bassiste est représenté par un dictionnaire contenant :
+- "nom" : le nom de famille
+- "prenom" : le prénom
+- "groupe" : le groupe ou les collaborations associés
+"""
 
 bassistes = [
     {"nom": "Alibo", "prenom": "Michel", "groupe": "Sixun"},
