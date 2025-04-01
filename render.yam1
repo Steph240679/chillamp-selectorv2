@@ -1,1 +1,8 @@
+services:
+  - type: web
+    name: chillamp-selector
+    env: python
+    buildCommand: ""
+    startCommand: python backend/app.py
+    plan: free
 
