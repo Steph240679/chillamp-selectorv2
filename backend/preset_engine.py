@@ -1,5 +1,3 @@
-# preset_engine.py
-
 from base_bassistes import base_bassistes
 from adaptateurs import (
     adapter_basse,
@@ -10,6 +8,24 @@ from adaptateurs import (
 )
 
 def get_presets_for_combination(bassiste, basse, ampli, effets, baffle):
+    """
+    Génère un preset en combinant les réglages pour le bassiste, la basse, l'ampli, les effets et le baffle.
+    
+    Paramètres:
+      - bassiste (str): Nom du bassiste, utilisé pour récupérer le profil dans base_bassistes.
+      - basse (str): Modèle de basse sélectionné.
+      - ampli (str): Modèle d'ampli sélectionné.
+      - effets (list): Liste des effets sélectionnés.
+      - baffle (str): Modèle de baffle sélectionné.
+    
+    Retourne:
+      - dict: Un dictionnaire contenant le preset complet.
+    
+    Lève une ValueError si le bassiste n'est pas trouvé dans la base.
+    """
+    if bassiste not in base_bassistes:
+        raise ValueError(f"Bassiste '{bassiste}' non trouvé dans la base de profils.")
+    
     cible = base_bassistes[bassiste]
 
     reglage_basse = adapter_basse(basse, cible)
