@@ -1,11 +1,9 @@
 from potentiometres_amplis import potentiometres_amplis
 
 def adapter_basse(basse, cible):
-    """
-    Adapte les réglages de la basse en fonction du modèle et du profil cible.
-    """
     caractere = cible.get("caractere", "")
     tone = 70
+
     if "chaud" in caractere:
         tone = 60
     elif "claquant" in caractere:
@@ -14,16 +12,17 @@ def adapter_basse(basse, cible):
     mic_position = "default"
     if "rondeur" in caractere:
         mic_position = "neck only"
-    elif "attaque" in caractere:
+    elif "attaque" in caractere or "growl" in caractere or "punch" in caractere:
+        mic_position = "both"
+    elif "claquant" in caractere:
         mic_position = "bridge only"
-        if "attaque" in caractere or "growl" in caractere or "punch" in caractere:
-    mic_position = "both"
 
     return {
         "volume": 100,
         "tone": tone,
         "mic_position": mic_position
     }
+
 
 def adapter_ampli(ampli, cible):
     """
