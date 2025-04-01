@@ -24,7 +24,7 @@ effets_basse = [
     "Chorus (Electro-Harmonix Small Clone)",
     "Clean Boost (Xotic RC Booster)",
     "Compressor (Keeley Bassist Limiting Amplifier)",
-    "Compressor ("Darkglass Hyper Luminal)"
+    "Compressor ("Darkglass Hyper Luminal)",
     "Crossover (Ashdown Sub Octave Plus)",
     "Delay (TC Electronic Flashback)",
     "Detuner (Digitech Drop)",
