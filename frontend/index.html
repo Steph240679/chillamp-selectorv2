@@ -38,15 +38,19 @@
 
   <script>
     async function fetchAndPopulate(id, endpoint) {
-      const res = await fetch(endpoint);
-      const data = await res.json();
-      const select = document.getElementById(id);
-      data.forEach(item => {
-        const opt = document.createElement('option');
-        opt.value = item;
-        opt.textContent = item;
-        select.appendChild(opt);
-      });
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        const select = document.getElementById(id);
+        data.forEach(item => {
+          const opt = document.createElement('option');
+          opt.value = item;
+          opt.textContent = item;
+          select.appendChild(opt);
+        });
+      } catch (error) {
+        console.error('Erreur lors du fetch:', error);
+      }
     }
 
     fetchAndPopulate('bassiste', '/api/liste_bassistes');
@@ -63,14 +67,17 @@
       const effets = Array.from(document.getElementById('effets').selectedOptions).map(opt => opt.value);
       const baffle = document.getElementById('baffle').value;
 
-      const response = await fetch('/api/preset', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
-      });
-
-      const data = await response.json();
-      document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      try {
+        const response = await fetch('/api/preset', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
+        });
+        const data = await response.json();
+        document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        console.error('Erreur lors de la génération du preset:', error);
+      }
     });
 
     async function downloadPDF() {
@@ -80,19 +87,21 @@
       const effets = Array.from(document.getElementById('effets').selectedOptions).map(opt => opt.value);
       const baffle = document.getElementById('baffle').value;
 
-      const response = await fetch('/api/preset/pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
-      });
-
-      const blob = await response.blob();
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download = 'preset_chillamp.pdf';
-      link.click();
+      try {
+        const response = await fetch('/api/preset/pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
+        });
+        const blob = await response.blob();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'preset_chillamp.pdf';
+        link.click();
+      } catch (error) {
+        console.error('Erreur lors du téléchargement du PDF:', error);
+      }
     }
   </script>
 </body>
 </html>
-
