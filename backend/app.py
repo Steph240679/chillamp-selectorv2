@@ -33,6 +33,26 @@ def generate_preset_pdf():
     pdf_buffer = generate_preset_pdf_flask(preset)
     return send_file(pdf_buffer, as_attachment=True, download_name="preset_chillamp.pdf", mimetype="application/pdf")
 
+@app.route('/api/liste_basses', methods=["GET"])
+def list_basses():
+    return jsonify(basses_uniques)
+
+@app.route('/api/liste_amplis', methods=["GET"])
+def list_amplis():
+    return jsonify(amplis_basse)
+
+@app.route('/api/liste_effets', methods=["GET"])
+def list_effets():
+    return jsonify(effets_basse)
+
+@app.route('/api/liste_baffles', methods=["GET"])
+def list_baffles():
+    return jsonify(baffles_basse)
+
+@app.route('/api/bassistes', methods=["GET"])
+def bassistes():
+    return jsonify(bassistes)
+
 @app.route("/")
 def index():
     return send_from_directory(os.path.join(os.path.dirname(__file__), "../frontend"), "index.html")
