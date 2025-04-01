@@ -1,5 +1,4 @@
-reportlab
-pip install -r requirements.txt
 Flask==2.2.5
 gunicorn
+reportlab
 
