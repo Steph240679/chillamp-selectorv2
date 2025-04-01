@@ -1,8 +1,3 @@
-"""
-Liste complète des basses.
-Chaque élément est une chaîne représentant le modèle d'une basse.
-"""
-
 basses_avec_type = {
     "Alembic Exploiter / Status Graphite": "active",
     "Alembic Series I": "active",
