@@ -2,8 +2,6 @@ services:
   - type: web
     name: chillamp-selector
     env: python
-    buildCommand: ""
+    buildCommand: pip install -r requirements.txt
     startCommand: python backend/app.py
     plan: free
-pip install -r requirements.txt
-
