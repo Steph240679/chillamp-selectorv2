@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify, send_file, send_from_directory
 import os
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from preset_engine import get_presets_for_combination
 from pdf_generator import generate_preset_pdf_flask
 
@@ -30,11 +30,10 @@ def generate_preset_pdf():
 
 @app.route("/")
 def index():
-    # Assure-toi que le dossier 'frontend' est à la racine du dépôt
     return send_from_directory(os.path.join(os.path.dirname(__file__), "../frontend"), "index.html")
 
 if __name__ == "__main__":
-    import os
     port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host="0.0.0.0", port=port)
-  
+    # On considère le mode production par défaut en déploiement
+    debug_mode = os.environ.get("FLASK_ENV", "production") != "production"
+    app.run(host="0.0.0.0", port=port, debug=debug_mode)
