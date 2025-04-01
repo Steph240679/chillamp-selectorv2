@@ -8,6 +8,7 @@
     h1 { color: #333; }
     label { display: block; margin-top: 1rem; }
     select, input[type="submit"], button { padding: 0.5rem; margin-top: 0.25rem; width: 100%; max-width: 400px; }
+    #effets { max-width: 400px; background: #fff; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; max-height: 300px; overflow-y: auto; }
     pre { background: #222; color: #eee; padding: 1rem; margin-top: 2rem; white-space: pre-wrap; word-wrap: break-word; }
   </style>
 </head>
@@ -24,8 +25,8 @@
     <label for="ampli">Ampli</label>
     <select id="ampli" required></select>
 
-    <label for="effets">Effets (Ctrl/Cmd + clic pour multiple)</label>
-    <select id="effets" multiple></select>
+    <label>Effets</label>
+    <div id="effets"></div>
 
     <label for="baffle">Baffle</label>
     <select id="baffle" required></select>
@@ -53,10 +54,31 @@
       }
     }
 
+    async function fetchAndRenderCheckboxes(id, endpoint) {
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        const container = document.getElementById(id);
+        data.forEach(effet => {
+          const label = document.createElement('label');
+          label.style.display = "block";
+          const input = document.createElement('input');
+          input.type = 'checkbox';
+          input.name = 'effets';
+          input.value = effet;
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(' ' + effet));
+          container.appendChild(label);
+        });
+      } catch (error) {
+        console.error('Erreur lors du fetch des effets:', error);
+      }
+    }
+
     fetchAndPopulate('bassiste', '/api/liste_bassistes');
     fetchAndPopulate('basse', '/api/liste_basses');
     fetchAndPopulate('ampli', '/api/liste_amplis');
-    fetchAndPopulate('effets', '/api/liste_effets');
+    fetchAndRenderCheckboxes('effets', '/api/liste_effets');
     fetchAndPopulate('baffle', '/api/liste_baffles');
 
     document.getElementById('presetForm').addEventListener('submit', async function(e) {
@@ -64,7 +86,7 @@
       const bassiste = document.getElementById('bassiste').value;
       const basse = document.getElementById('basse').value;
       const ampli = document.getElementById('ampli').value;
-      const effets = Array.from(document.getElementById('effets').selectedOptions).map(opt => opt.value);
+      const effets = Array.from(document.querySelectorAll('#effets input:checked')).map(e => e.value);
       const baffle = document.getElementById('baffle').value;
 
       try {
@@ -84,7 +106,7 @@
       const bassiste = document.getElementById('bassiste').value;
       const basse = document.getElementById('basse').value;
       const ampli = document.getElementById('ampli').value;
-      const effets = Array.from(document.getElementById('effets').selectedOptions).map(opt => opt.value);
+      const effets = Array.from(document.querySelectorAll('#effets input:checked')).map(e => e.value);
       const baffle = document.getElementById('baffle').value;
 
       try {
