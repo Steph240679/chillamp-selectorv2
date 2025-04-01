@@ -1,11 +1,13 @@
-# adaptateurs.py (version allégée, sans vérifications inutiles)
+# adaptateurs.py (version enrichie avec EQ actif adaptatif)
 
 from potentiometres_amplis import potentiometres_amplis
+from basses_avec_type import basses_avec_type
 
 
 def adapter_basse(basse, cible):
     caractere = cible.get("caractere", "")
     tone = 70
+    volume = 100
 
     if "chaud" in caractere:
         tone = 60
@@ -20,11 +22,34 @@ def adapter_basse(basse, cible):
     elif "claquant" in caractere:
         mic_position = "bridge only"
 
-    return {
-        "volume": 100,
+    type_basse = basses_avec_type.get(basse, "passive")
+    eq_actif = None
+
+    if type_basse == "active":
+        volume = 90
+        eq_actif = {
+            "Bass": 60,
+            "Medium": 60,
+            "Treble": 60
+        }
+        if "chaud" in caractere or "rond" in caractere:
+            eq_actif["Bass"] += 10
+            eq_actif["Treble"] -= 10
+        if "claquant" in caractere:
+            eq_actif["Treble"] += 10
+        if "attaque" in caractere or "growl" in caractere:
+            eq_actif["Medium"] += 10
+
+    resultat = {
+        "volume": volume,
         "tone": tone,
         "mic_position": mic_position
     }
+
+    if eq_actif:
+        resultat["EQ actif"] = eq_actif
+
+    return resultat
 
 
 def adapter_ampli(ampli, cible):
