@@ -6,13 +6,41 @@ from basses_avec_type import basses_avec_type
 
 def adapter_basse(basse, cible):
     caractere = cible.get("caractere", "")
+    mot_cle = caractere.split()[-1].lower()  # extrait le mot-clé final
+
     tone = 70
     volume = 100
 
-    if "chaud" in caractere:
+    if mot_cle == "chaud":
         tone = 60
-    elif "claquant" in caractere:
+    elif mot_cle == "claquant":
         tone = 80
+
+    mic_position = "default"
+    if mot_cle == "rondeur":
+        mic_position = "neck only"
+    elif mot_cle in ["attaque", "growl", "punch"]:
+        mic_position = "both"
+    elif mot_cle == "claquant":
+        mic_position = "bridge only"
+
+    type_basse = basses_avec_type.get(basse, "passive")
+    eq_actif = None
+
+    if type_basse == "active":
+        volume = 90
+        eq_actif = {
+            "Bass": 60,
+            "Medium": 60,
+            "Treble": 60
+        }
+        if mot_cle in ["chaud", "rond"]:
+            eq_actif["Bass"] += 10
+            eq_actif["Treble"] -= 10
+        if mot_cle == "claquant":
+            eq_actif["Treble"] += 10
+        if mot_cle in ["attaque", "growl", "punch"]:
+            eq_actif["Medium"] += 10
 
     mic_position = "default"
     if "rondeur" in caractere:
