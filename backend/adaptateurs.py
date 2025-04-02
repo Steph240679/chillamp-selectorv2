@@ -1,5 +1,3 @@
-# adaptateurs.py (version enrichie avec EQ actif adaptatif)
-
 from potentiometres_amplis import potentiometres_amplis
 from basses_avec_type import basses_avec_type
 
@@ -42,32 +40,6 @@ def adapter_basse(basse, cible):
         if mot_cle in ["attaque", "growl", "punch"]:
             eq_actif["Medium"] += 10
 
-    mic_position = "default"
-    if "rondeur" in caractere:
-        mic_position = "neck only"
-    elif "attaque" in caractere or "growl" in caractere or "punch" in caractere:
-        mic_position = "both"
-    elif "claquant" in caractere:
-        mic_position = "bridge only"
-
-    type_basse = basses_avec_type.get(basse, "passive")
-    eq_actif = None
-
-    if type_basse == "active":
-        volume = 90
-        eq_actif = {
-            "Bass": 60,
-            "Medium": 60,
-            "Treble": 60
-        }
-        if "chaud" in caractere or "rond" in caractere:
-            eq_actif["Bass"] += 10
-            eq_actif["Treble"] -= 10
-        if "claquant" in caractere:
-            eq_actif["Treble"] += 10
-        if "attaque" in caractere or "growl" in caractere:
-            eq_actif["Medium"] += 10
-
     resultat = {
         "volume": volume,
         "tone": tone,
@@ -83,22 +55,24 @@ def adapter_basse(basse, cible):
 def adapter_ampli(ampli, cible):
     potards = potentiometres_amplis.get(ampli, [])
     caractere = cible.get("caractere", "")
+    mot_cle = caractere.split()[-1].lower()
+
     reglages = {}
 
     for potard in potards:
         potard_lc = potard.lower()
         if "bass" in potard_lc:
-            reglages[potard] = 70 if "chaud" in caractere else 60
+            reglages[potard] = 70 if mot_cle == "chaud" else 60
         elif "mid" in potard_lc:
-            reglages[potard] = 50 if "scooped" in caractere else 65
+            reglages[potard] = 50 if mot_cle == "scooped" else 65
         elif "treble" in potard_lc:
-            reglages[potard] = 60 if "claquant" in caractere else 50
+            reglages[potard] = 60 if mot_cle == "claquant" else 50
         elif "gain" in potard_lc:
             reglages[potard] = 55
         elif "volume" in potard_lc or "master" in potard_lc:
             reglages[potard] = 80
         elif "presence" in potard_lc:
-            reglages[potard] = 60 if "vintage" in caractere else 70
+            reglages[potard] = 60 if mot_cle == "vintage" else 70
         else:
             reglages[potard] = 50
 
