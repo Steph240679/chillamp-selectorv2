@@ -3,110 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <title>Chillamp Selector 🎸</title>
+  <style>
+    /* Styles de base pour une mise en page claire */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    header, main {
+      max-width: 600px;
+      margin: auto;
+    }
+    header h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 1.1rem;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <h1>🎸 Chillamp Selector</h1>
+  <header>
+    <h1>🎸 Chillamp Selector</h1>
+  </header>
+  <main>
+    <form id="chillamp-form">
+      <fieldset>
+        <legend>Configuration du preset</legend>
 
-  <!-- Sélection Bassiste -->
-  <label for="bassiste-select">Bassiste :</label>
-  <select id="bassiste-select" name="bassiste" required>
-    <option value="">-- Choisissez un bassiste --</option>
-  </select><br><br>
+        <div class="form-group">
+          <label for="bassiste-select">Bassiste :</label>
+          <select id="bassiste-select" name="bassiste" required>
+            <option value="">-- Choisissez un bassiste --</option>
+          </select>
+        </div>
 
-  <!-- Sélection Basse -->
-  <label for="basse-select">Basse :</label>
-  <select id="basse-select" name="basse" required>
-    <option value="">-- Choisissez une basse --</option>
-  </select><br><br>
+        <div class="form-group">
+          <label for="basse-select">Basse :</label>
+          <select id="basse-select" name="basse" required>
+            <option value="">-- Choisissez une basse --</option>
+          </select>
+        </div>
 
-  <!-- Sélection Ampli -->
-  <label for="ampli-select">Ampli :</label>
-  <select id="ampli-select" name="ampli" required>
-    <option value="">-- Choisissez un ampli --</option>
-  </select><br><br>
+        <div class="form-group">
+          <label for="ampli-select">Ampli :</label>
+          <select id="ampli-select" name="ampli" required>
+            <option value="">-- Choisissez un ampli --</option>
+          </select>
+        </div>
 
-  <!-- Sélection Effets -->
-  <label for="effets-select">Effets :</label>
-  <select id="effets-select" name="effets" multiple size="6">
-  </select><br><br>
+        <div class="form-group">
+          <label for="effets-select">Effets :</label>
+          <select id="effets-select" name="effets" multiple size="6">
+          </select>
+        </div>
 
-  <!-- Sélection Baffle -->
-  <label for="baffle-select">Baffle :</label>
-  <select id="baffle-select" name="baffle" required>
-    <option value="">-- Choisissez un baffle --</option>
-  </select><br><br>
+        <div class="form-group">
+          <label for="baffle-select">Baffle :</label>
+          <select id="baffle-select" name="baffle" required>
+            <option value="">-- Choisissez un baffle --</option>
+          </select>
+        </div>
 
-  <!-- Bouton Génération PDF -->
-  <button id="generate-pdf-btn">🎼 Générer le PDF</button>
+      </fieldset>
+      <button type="button" id="generate-pdf-btn">🎼 Générer le PDF</button>
+    </form>
+  </main>
 
   <script>
-    // Chargement Bassistes (corrigé)
-    fetch("/api/liste_bassistes")
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById("bassiste-select");
-        data.forEach(b => {
+    // Fonction générique pour charger des options depuis une API
+    async function loadOptions(endpoint, selectId, optionFormatter) {
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        const select = document.getElementById(selectId);
+        data.forEach(item => {
           const option = document.createElement("option");
-          option.text = `${b.nom} ${b.prenom} (${b.groupe})`;
-          option.value = b.cle;
+          option.value = item.cle || item; // Utilise item.cle si présent, sinon item
+          option.text = optionFormatter ? optionFormatter(item) : item;
           select.appendChild(option);
         });
-      });
+      } catch (error) {
+        console.error("Erreur lors du chargement de " + endpoint, error);
+      }
+    }
 
-    // Chargement Basses
-    fetch("/api/liste_basses")
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById("basse-select");
-        data.forEach(name => {
-          const option = document.createElement("option");
-          option.value = name;
-          option.text = name;
-          select.appendChild(option);
-        });
-      });
+    // Chargement des listes avec les bons formats
+    loadOptions("/api/liste_bassistes", "bassiste-select", item => `${item.nom} ${item.prenom} (${item.groupe})`);
+    loadOptions("/api/liste_basses", "basse-select");
+    loadOptions("/api/liste_amplis", "ampli-select");
+    loadOptions("/api/liste_effets", "effets-select");
+    loadOptions("/api/liste_baffles", "baffle-select");
 
-    // Chargement Amplis
-    fetch("/api/liste_amplis")
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById("ampli-select");
-        data.forEach(name => {
-          const option = document.createElement("option");
-          option.value = name;
-          option.text = name;
-          select.appendChild(option);
-        });
-      });
-
-    // Chargement Effets
-    fetch("/api/liste_effets")
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById("effets-select");
-        data.forEach(name => {
-          const option = document.createElement("option");
-          option.value = name;
-          option.text = name;
-          select.appendChild(option);
-        });
-      });
-
-    // Chargement Baffles
-    fetch("/api/liste_baffles")
-      .then(res => res.json())
-      .then(data => {
-        const select = document.getElementById("baffle-select");
-        data.forEach(name => {
-          const option = document.createElement("option");
-          option.value = name;
-          option.text = name;
-          select.appendChild(option);
-        });
-      });
-
-    // Génération PDF
-    document.getElementById("generate-pdf-btn").addEventListener("click", () => {
+    // Gestion de la génération du PDF
+    document.getElementById("generate-pdf-btn").addEventListener("click", async () => {
       const bassiste = document.getElementById("bassiste-select").value;
       const basse = document.getElementById("basse-select").value;
       const ampli = document.getElementById("ampli-select").value;
@@ -118,16 +139,14 @@
         return;
       }
 
-      fetch("/api/preset/pdf", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
-      })
-      .then(response => {
+      try {
+        const response = await fetch("/api/preset/pdf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
+        });
         if (!response.ok) throw new Error("Erreur lors de la génération du PDF.");
-        return response.blob();
-      })
-      .then(blob => {
+        const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -135,8 +154,9 @@
         document.body.appendChild(a);
         a.click();
         a.remove();
-      })
-      .catch(error => alert(error.message));
+      } catch (error) {
+        alert(error.message);
+      }
     });
   </script>
 </body>
