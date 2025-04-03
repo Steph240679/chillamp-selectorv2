@@ -96,9 +96,16 @@ def generate_preset_pdf_flask(preset):
     """
     Génère un PDF à partir d'un preset et retourne un buffer pour Flask.
     """
+    print("📥 Génération du PDF pour :", preset["bassiste"])
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
-    _draw_preset_content(c, preset)
-    c.save()
-    buffer.seek(0)
-    return buffer
+
+    try:
+        _draw_preset_content(c, preset)
+        c.save()
+        buffer.seek(0)
+        print("✅ PDF généré avec succès")
+        return buffer
+    except Exception as e:
+        print("❌ Erreur lors de la génération du PDF :", e)
+        raise
