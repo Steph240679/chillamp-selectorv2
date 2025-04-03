@@ -29,15 +29,33 @@ def _draw_preset_content(c, preset):
     y -= 20
     c.setFont("Helvetica-Bold", 14)
     c.drawString(50, y, "Effets")
+
     for effet in preset["effets"]:
         nom_effet = effet.get("nom", "Effet inconnu")
         reglages = effet.get("reglages", {})
+        controls = effet.get("controls", {})
 
         y -= 20
         c.setFont("Helvetica-Bold", 12)
         c.drawString(60, y, nom_effet)
 
-        y = draw_dict_block(c, reglages, y, indent=80)
+        # Réglages appliqués
+        if reglages:
+            y -= 15
+            c.setFont("Helvetica-Oblique", 12)
+            c.drawString(70, y, "Réglages appliqués :")
+            y = draw_dict_block(c, reglages, y, indent=90)
+
+        # Détails des contrôles disponibles
+        if controls:
+            y -= 10
+            c.setFont("Helvetica-Oblique", 12)
+            c.drawString(70, y, "Contrôles disponibles :")
+            for ctrl_nom, ctrl_data in controls.items():
+                y -= 15
+                ligne = f"{ctrl_nom} ({ctrl_data.get('type')}) : {ctrl_data.get('plage')} → {ctrl_data.get('effet')}"
+                c.setFont("Helvetica", 11)
+                c.drawString(90, y, ligne)
 
     y -= 20
     c.setFont("Helvetica-Bold", 14)
@@ -52,7 +70,6 @@ def _draw_preset_content(c, preset):
     c.drawString(60, y, " ➔ ".join(preset["chaine_signal"]))
 
     return c
-
 def draw_dict_block(c, data, y, indent=60):
     """
     Dessine un bloc de texte pour un dictionnaire sur le canvas.
