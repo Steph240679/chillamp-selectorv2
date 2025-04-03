@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <title>Chillamp Selector 🎸</title>
   <style>
-    /* Styles de base pour une mise en page claire */
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
       background-color: #f9f9f9;
     }
     header, main {
-      max-width: 600px;
+      max-width: 800px;
       margin: auto;
     }
     header h1 {
@@ -23,6 +22,7 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
     }
     .form-group {
       margin-bottom: 15px;
@@ -50,6 +50,32 @@
     }
     button:hover {
       background-color: #0056b3;
+    }
+    #effets-affiches {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .effet-bloc {
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 15px;
+    }
+    .effet-bloc h3 {
+      margin-top: 0;
+      color: #007BFF;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: left;
     }
   </style>
 </head>
@@ -98,11 +124,13 @@
 
       </fieldset>
       <button type="button" id="generate-pdf-btn">🎼 Générer le PDF</button>
+      <button type="button" id="voir-reglages-btn">🔎 Voir les réglages</button>
     </form>
+
+    <div id="effets-affiches"></div>
   </main>
 
   <script>
-    // Fonction générique pour charger des options depuis une API
     async function loadOptions(endpoint, selectId, optionFormatter) {
       try {
         const res = await fetch(endpoint);
@@ -110,7 +138,7 @@
         const select = document.getElementById(selectId);
         data.forEach(item => {
           const option = document.createElement("option");
-          option.value = item.cle || item; // Utilise item.cle si présent, sinon item
+          option.value = item.cle || item;
           option.text = optionFormatter ? optionFormatter(item) : item;
           select.appendChild(option);
         });
@@ -119,21 +147,15 @@
       }
     }
 
-    // Chargement des listes avec les bons formats
     loadOptions("/api/liste_bassistes", "bassiste-select", item => `${item.nom} ${item.prenom} (${item.groupe})`);
     loadOptions("/api/liste_basses", "basse-select");
     loadOptions("/api/liste_amplis", "ampli-select");
     loadOptions("/api/liste_effets", "effets-select");
     loadOptions("/api/liste_baffles", "baffle-select");
 
-    // Gestion de la génération du PDF
+    // Génération du PDF
     document.getElementById("generate-pdf-btn").addEventListener("click", async () => {
-      const bassiste = document.getElementById("bassiste-select").value;
-      const basse = document.getElementById("basse-select").value;
-      const ampli = document.getElementById("ampli-select").value;
-      const baffle = document.getElementById("baffle-select").value;
-      const effets = Array.from(document.getElementById("effets-select").selectedOptions).map(opt => opt.value);
-
+      const { bassiste, basse, ampli, effets, baffle } = getFormData();
       if (!bassiste || !basse || !ampli || !baffle) {
         alert("Merci de remplir tous les champs requis.");
         return;
@@ -158,6 +180,79 @@
         alert(error.message);
       }
     });
+
+    // Voir les réglages dynamiques
+    document.getElementById("voir-reglages-btn").addEventListener("click", async () => {
+      const { bassiste, basse, ampli, effets, baffle } = getFormData();
+      if (!bassiste || !basse || !ampli || !baffle) {
+        alert("Merci de remplir tous les champs requis.");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/preset", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bassiste, basse, ampli, effets, baffle })
+        });
+        if (!response.ok) throw new Error("Erreur lors de la récupération du preset.");
+        const preset = await response.json();
+        afficherEffets(preset);
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+
+    function getFormData() {
+      return {
+        bassiste: document.getElementById("bassiste-select").value,
+        basse: document.getElementById("basse-select").value,
+        ampli: document.getElementById("ampli-select").value,
+        baffle: document.getElementById("baffle-select").value,
+        effets: Array.from(document.getElementById("effets-select").selectedOptions).map(opt => opt.value)
+      };
+    }
+
+    function afficherEffets(preset) {
+      const container = document.getElementById("effets-affiches");
+      container.innerHTML = "";
+
+      preset.effets.forEach(effet => {
+        const bloc = document.createElement("div");
+        bloc.classList.add("effet-bloc");
+
+        const titre = document.createElement("h3");
+        titre.textContent = effet.nom;
+        bloc.appendChild(titre);
+
+        const desc = document.createElement("p");
+        desc.innerHTML = `<em>${effet.description}</em>`;
+        bloc.appendChild(desc);
+
+        if (Object.keys(effet.reglages).length > 0) {
+          const table = document.createElement("table");
+          table.innerHTML = "<tr><th>Réglage</th><th>Valeur</th></tr>";
+          for (const [k, v] of Object.entries(effet.reglages)) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${k}</td><td>${v}</td>`;
+            table.appendChild(row);
+          }
+          bloc.appendChild(table);
+        }
+
+        if (Object.keys(effet.controls).length > 0) {
+          const liste = document.createElement("ul");
+          for (const [nom, ctrl] of Object.entries(effet.controls)) {
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${nom}</strong> (${ctrl.type}) : ${ctrl.plage} → ${ctrl.effet}`;
+            liste.appendChild(li);
+          }
+          bloc.appendChild(liste);
+        }
+
+        container.appendChild(bloc);
+      });
+    }
   </script>
 </body>
 </html>
