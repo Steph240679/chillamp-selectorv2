@@ -66,6 +66,10 @@ def list_baffles():
     # On retourne les baffles triés par ordre alphabétique
     return jsonify(sorted(baffles_basse))
 
+@app.route('/api/liste_effets', methods=["GET"])
+def list_effets():
+    return jsonify(effets_basse)
+
 @app.route('/api/liste_bassistes', methods=['GET'])
 def list_bassistes():
     # On retourne la liste complète des bassistes, triée par la clé de correspondance
