@@ -11,6 +11,7 @@ from liste_amplis_basse_complets import amplis_basse
 from liste_effets_basse_complets import effets_basse
 from liste_baffles_basse_complets import baffles_basse
 from base_bassistes import base_bassistes
+from effets_details import effets_details
 
 app = Flask(__name__)
 
