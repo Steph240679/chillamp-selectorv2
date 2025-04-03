@@ -62,7 +62,7 @@ effets_basse = [
     "Noise Gate (Boss NS-2)",
     "Octaver (Electro-Harmonix POG2)",
     "Overdrive (Fulltone Bass-Drive MOSFET)",
-    "Parametric EQ (Empress ParaEQ MKII)",
+    "Parametric EQ (Empress ParaEQ)",
     "Phaser (MXR Phase 90)",
     "Pitch Shifter (Digitech Whammy DT)",
     "Preamp (Aguilar DB 925)",
