@@ -40,6 +40,22 @@ def get_presets_for_combination(bassiste, basse, ampli, effets, baffle):
 
     chaine_signal = generer_chaine_signal(basse, effets, ampli, baffle)
 
+    # Enrichissement des effets avec description + contrôles
+    effets_configures = []
+    for effet in effets:
+        effet_dict = {
+            "nom": effet,
+            "reglages": reglage_effets.get(effet, {})
+        }
+        if effet in effets_details:
+            effet_dict["description"] = effets_details[effet]["description"]
+            effet_dict["controls"] = effets_details[effet]["controls"]
+        else:
+            effet_dict["description"] = "Aucune description disponible"
+            effet_dict["controls"] = {}
+
+        effets_configures.append(effet_dict)
+
     return {
         "bassiste": bassiste,
         "basse": {
@@ -50,7 +66,7 @@ def get_presets_for_combination(bassiste, basse, ampli, effets, baffle):
             "modele": ampli,
             "reglages": reglage_ampli
         },
-        "effets": reglage_effets,
+        "effets": effets_configures,
         "baffle": {
             "modele": baffle,
             "profil": reglage_baffle
