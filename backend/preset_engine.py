@@ -3,6 +3,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from base_bassistes import base_bassistes
+from effets_details import effets_details
 from adaptateurs import (
     adapter_basse,
     adapter_ampli,
