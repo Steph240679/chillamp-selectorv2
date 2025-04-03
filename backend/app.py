@@ -50,7 +50,6 @@ def generate_preset_pdf():
 
 @app.route('/api/liste_basses', methods=["GET"])
 def list_basses():
-    # On retourne les noms de basses triés
     return jsonify(sorted(basses_avec_type.keys()))
 
 @app.route('/api/liste_amplis', methods=["GET"])
@@ -63,22 +62,15 @@ def list_effets():
 
 @app.route('/api/liste_baffles', methods=["GET"])
 def list_baffles():
-    # On retourne les baffles triés par ordre alphabétique
     return jsonify(sorted(baffles_basse))
-
-@app.route('/api/liste_effets', methods=["GET"])
-def list_effets():
-    return jsonify(effets_basse)
 
 @app.route('/api/liste_bassistes', methods=['GET'])
 def list_bassistes():
-    # On retourne la liste complète des bassistes, triée par la clé de correspondance
     sorted_bassistes = sorted(bassistes, key=lambda b: b["cle"])
     return jsonify(sorted_bassistes)
 
 @app.route("/")
 def index():
-    # Envoi du fichier index.html depuis le dossier frontend
     return send_from_directory(os.path.join(os.path.dirname(__file__), "../frontend"), "index.html")
 
 if __name__ == "__main__":
